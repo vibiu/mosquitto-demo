@@ -3,7 +3,7 @@ BACKEND_CDB ?= no
 BACKEND_MYSQL ?= no
 BACKEND_SQLITE ?= no
 BACKEND_REDIS ?= no
-BACKEND_POSTGRES ?= yes 
+BACKEND_POSTGRES ?= yes
 BACKEND_LDAP ?= no
 BACKEND_HTTP ?= no
 BACKEND_JWT ?= no
@@ -13,10 +13,10 @@ BACKEND_MEMCACHED ?= no
 
 # Specify the path to the Mosquitto sources here
 # MOSQUITTO_SRC = /usr/local/Cellar/mosquitto/1.4.12
-MOSQUITTO_SRC =  /mosquitto/src/mosquittto/src
+MOSQUITTO_SRC = /mosquitto/src/mosquitto/src
 
 # Specify the path the OpenSSL here
-OPENSSLDIR = /usr/lib
+OPENSSLDIR = /usr
 
 # Add support for django hashers algorithm name
 SUPPORT_DJANGO_HASHERS ?= no

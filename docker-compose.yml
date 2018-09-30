@@ -9,6 +9,10 @@ services:
       - postgres_db
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    command: ['mosquitto', '-c', '/mosquitto/config/mosquitto.conf']
+    ports:
+      - 1883:1883
+      - 9001:9001
 
   postgres_db:
     build: 
@@ -23,6 +27,13 @@ services:
 
   mqtt_server:
     image: python:3-alpine
+    volumes:
+      - ./loop.sh:/loop.sh
+      - ./mqtt_server:/mqtt_server
+    command: ['/bin/sh', '/loop.sh']
+
+  node_client:
+    image: node:10-alpine
     volumes:
       - ./loop.sh:/loop.sh
     command: ['/bin/sh', '/loop.sh']
