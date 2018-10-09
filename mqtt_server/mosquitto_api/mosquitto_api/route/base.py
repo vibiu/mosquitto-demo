@@ -15,3 +15,4 @@ def add_version(url_prefix):
 
 account_bp = Blueprint('account', __name__, url_prefix=add_version('/account'))
 acls_bp = Blueprint('acls', __name__, url_prefix=add_version('/acls'))
+topic_bp = Blueprint('account', __name__, url_prefix=add_version('/topic'))
