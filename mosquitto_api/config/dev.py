@@ -20,7 +20,7 @@ redis_config = {
 }
 
 db_config = {
-    'url': 'postgresql+psycopg2://root:root_password@121.42.195.83:5432'
+    'url': 'postgresql+pg8000://root:root_password@postgres_db'
     '/mosquitto'
 }
 

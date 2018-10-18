@@ -5,6 +5,7 @@ services:
     build:
       context: ./mosquitto
       dockerfile: ./Dockerfile
+    container_name: mosquitto
     depends_on:
       - postgres_db
     volumes:
@@ -12,29 +13,30 @@ services:
     command: ['mosquitto', '-c', '/mosquitto/config/mosquitto.conf']
     ports:
       - 1883:1883
-      - 9001:9001
 
   postgres_db:
     build: 
-      context: ./postgres
+      context: ./postgres_db
       dockerfile: ./Dockerfile
+    container_name: postgres_db
     environment:
       POSTGRES_DB: mosquitto
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root_password
     volumes:
-      - ./postgres/init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./postgres_db/init.sh:/docker-entrypoint-initdb.d/init.sh
+    ports:
+      - 5432:5432
 
-  mqtt_server:
-    image: python:3-alpine
+  mosquitto_api:
+    build:
+        context: ./mosquitto_api
+        dockerfile: ./Dockerfile
+    container_name: mosquitto_api
+    working_dir: /mosquitto_api
     volumes:
-      - ./loop.sh:/loop.sh
-      - ./mqtt_server:/mqtt_server
-    command: ['/bin/sh', '/loop.sh']
-
-  node_client:
-    image: node:10-alpine
-    volumes:
-      - ./loop.sh:/loop.sh
-    command: ['/bin/sh', '/loop.sh']
+      - ./mosquitto_api:/mosquitto_api
+    command: ['gunicorn', '-c', 'gunicorn.cfg', 'run:app']
+    ports:
+        - 8000:8000
 
