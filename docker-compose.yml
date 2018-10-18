@@ -38,5 +38,5 @@ services:
       - ./mosquitto_api:/mosquitto_api
     command: ['gunicorn', '-c', 'gunicorn.cfg', 'run:app']
     ports:
-        - 8000:8000
+        - 8001:8000
 
