@@ -1,18 +1,20 @@
-FROM eclipse-mosquitto
+FROM eclipse-mosquitto:1.5.5
+
+ENV MOSQUITTO_AUTH_PLUG_VERSION=0.1.3 MOSQUITO_VERSION=1.5.5
+
 WORKDIR /mosquitto
 ADD src /mosquitto/src
 ADD config /mosquitto/config
-ADD docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN echo "http://mirrors.aliyun.com/alpine/v3.4/main/" > /etc/apk/repositories && \
     apk update && \
-    apk add git mosquitto-dev postgresql-dev openssl build-base && \
-    echo "192.30.253.112     github.com" >> /etc/hosts && \
-    echo "151.101.72.133    assets-cdn.github.com" >> /etc/hosts && \
-    echo "151.101.193.194    github.global.ssl.fastly.net" >> /etc/hosts && \
-    git clone https://github.com/eclipse/mosquitto /mosquitto/src/mosquitto && \
-    git clone https://github.com/jpmens/mosquitto-auth-plug /mosquitto/src/mosquitto-auth-plug && \
-    mv /mosquitto/config/config.mk /mosquitto/src/mosquitto-auth-plug/config.mk &&\
+    apk add wget mosquitto-dev postgresql-dev openssl build-base && \
+    wget https://github.com/jpmens/mosquitto-auth-plug/archive/"$MOSQUITTO_AUTH_PLUG_VERSION".tar.gz \
+        -O /mosquitto/src/mosquitto-auth-plug.tar.gz && \
+    tar zxf /mosquitto/src/mosquitto-auth-plug.tar.gz -C /mosquitto/src && \
+    mv /mosquitto/src/mosquitto-auth-plug-"$MOSQUITTO_AUTH_PLUG_VERSION" /mosquitto/src/mosquitto-auth-plug && \
+    rm -rf /mosquitto/src/mosquitto_auth_plug.tar.gz && \
+    mv /mosquitto/config/config.mk /mosquitto/src/mosquitto-auth-plug/config.mk && \
     cd /mosquitto/src/mosquitto-auth-plug && \
     make clean && make
 

@@ -8,6 +8,9 @@ services:
     container_name: mosquitto
     depends_on:
       - postgres_db
+
+    links:
+      - postgres_db
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
     command: ['mosquitto', '-c', '/mosquitto/config/mosquitto.conf']
@@ -27,16 +30,9 @@ services:
       - ./postgres_db/init.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
       - 5432:5432
-
-  mosquitto_api:
-    build:
-        context: ./mosquitto_api
-        dockerfile: ./Dockerfile
-    container_name: mosquitto_api
-    working_dir: /mosquitto_api
-    volumes:
-      - ./mosquitto_api:/mosquitto_api
-    command: ['gunicorn', '-c', 'gunicorn.cfg', 'run:app']
-    ports:
-        - 8001:8000
+    healthcheck:
+     test: ["CMD-SHELL", "pg_isready -U root -d mosquitto"]
+     interval: 5s
+     timeout: 3s
+     retries: 5
 
