@@ -30,6 +30,7 @@ docker-compose build --no-cache
 ```
 docker-compose up -d
 ```
+some times the mosquitto container will not work just because the healthcheck is not pass. It's strange, but you can run this code again.
 
 # Try other mosquitto version
 Edit `configure.sh`, change the version here if you like.
@@ -45,6 +46,8 @@ sh ./configre.sh
 build your docker images again after that.
 
 # Customize mosquitto config
-Edit `mosquitto/config/config.mk` and `mosquitto/config/mosquitto.conf`
+Edit `mosquitto/config/config.mk` and `mosquitto/config/mosquitto.conf`.
+
 You can read more about the usage of thease two file in [jpmens/mosquitto-auth-plug/README.md](https://github.com/jpmens/mosquitto-auth-plug/blob/master/README.md)
+
 
