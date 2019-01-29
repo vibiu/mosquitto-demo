@@ -8,7 +8,6 @@ services:
     container_name: mosquitto
     depends_on:
       - postgres_db
-
     links:
       - postgres_db
     volumes:
